@@ -1,5 +1,6 @@
 package com.mbphoenix.FullStackProject.service;
 
+import com.mbphoenix.FullStackProject.exception.StudentAlreadyExistsException;
 import com.mbphoenix.FullStackProject.model.Student;
 import com.mbphoenix.FullStackProject.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class StudentService implements IStudentService{
     }
 
     private boolean studentAlreadyExists(String email) {
-        return studentRepository.findByEmail(email);
+        return studentRepository.findByEmail(email).isPresent();
 
     }
 
