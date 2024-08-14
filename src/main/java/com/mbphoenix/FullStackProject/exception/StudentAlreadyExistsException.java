@@ -1,6 +1,7 @@
 package com.mbphoenix.FullStackProject.exception;
 
-public class StudentAlreadyExistsException extends Throwable {
-    public StudentAlreadyExistsException(String s) {
+public class StudentAlreadyExistsException extends RuntimeException {
+    public StudentAlreadyExistsException(String message) {
+        super(message);
     }
 }
