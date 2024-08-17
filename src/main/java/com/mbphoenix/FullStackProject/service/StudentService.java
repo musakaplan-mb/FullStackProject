@@ -1,6 +1,7 @@
 package com.mbphoenix.FullStackProject.service;
 
 import com.mbphoenix.FullStackProject.exception.StudentAlreadyExistsException;
+import com.mbphoenix.FullStackProject.exception.StudentNotFoundException;
 import com.mbphoenix.FullStackProject.model.Student;
 import com.mbphoenix.FullStackProject.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,16 +38,26 @@ public class StudentService implements IStudentService{
 
     @Override
     public Student updateStudent(Student student, Long id) {
-        return null;
+        return studentRepository.findById(id).map(st -> {
+            st.setFirstName(student.getFirstName());
+            st.setLastName(student.getLastName());
+            st.setEmail(student.getEmail());
+            st.setDepartment(student.getDepartment());
+            return studentRepository.save(st);
+        } ).orElseThrow(() ->new StudentNotFoundException("Sorry, this student could not be found"));
     }
 
     @Override
-    public Student getStudenBytId(Long id) {
-        return null;
+    public Student getStudenById(Long id) {
+        return studentRepository.findById(id)
+                .orElseThrow(()-> new StudentNotFoundException("Sorry, no student found with the Id :"+ id));
     }
 
     @Override
     public void deleteStudent(Long id) {
-
+        if(!studentRepository.existsById(id)){
+            throw new StudentNotFoundException("Sorry, student not found");
+        }
+        studentRepository.deleteById(id);
     }
 }
